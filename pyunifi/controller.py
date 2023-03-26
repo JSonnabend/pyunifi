@@ -25,6 +25,7 @@ class APIError(Exception):
 def retry_login(func, *args, **kwargs):  # pylint: disable=w0613
     """To reattempt login if requests exception(s) occur at time of call"""
 
+
     def wrapper(*args, **kwargs):
         try:
             try:
@@ -85,6 +86,7 @@ class Controller:  # pylint: disable=R0902,R0904
 
         self.host = host
         self.headers = None
+        self.cookies = None
         self.version = version
         self.port = port
         self.username = username
@@ -188,8 +190,9 @@ class Controller:  # pylint: disable=R0902,R0904
             headers=self.headers,
         )
 
-        if response.headers.get("X-CSRF-Token"):
-            self.headers = {"X-CSRF-Token": response.headers["X-CSRF-Token"]}
+        self.headers = {"X-CSRF-Token": response.headers.get("X-CSRF-Token", ''),
+                        "cookies": response.headers.get("set-cookie", '')
+                        }
 
         if response.status_code != 200:
             raise APIError(
@@ -290,7 +293,8 @@ class Controller:  # pylint: disable=R0902,R0904
     def get_sites(self):
         """Return a list of all sites,
         with their UID and description"""
-        return self._read(self.url + "api/self/sites")
+        # return self._read(self.url + "api/self/sites")
+        return self._read(self.url + "api/stat/sites")
 
     def get_wlan_conf(self):
         """Return a list of configured WLANs
