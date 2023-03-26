@@ -26,17 +26,20 @@ sites = controller.get_sites()
 aps = controller.get_aps()
 ap_names = dict([(ap['mac'], ap.get('name', '????')) for ap in aps])
 clients = controller.get_clients()
+fixed_clients = [c for c in clients if c.get("use_fixedip", False) == True]
 clients.sort(key=lambda x: -x.get('rssi', 100))
+users = controller.get_users()
 
-FORMAT = '%-16s  %18s  %-12s  %4s  %4s  %3s  %3s'
-print(FORMAT % ('NAME', 'MAC', 'AP', 'CHAN', 'RSSI', 'RX', 'TX'))
-for client in clients:
+FORMAT = '%-15s\t%-30s  %-18s  %-12s  %-4s  %-4s  %-3s  %-3s'
+print(FORMAT % ('ADDR', 'NAME', 'MAC', 'AP', 'CHAN', 'RSSI', 'RX', 'TX'))
+for client in fixed_clients:
     ap_name = ap_names.get(client.get('ap_mac', '????'), '????')
-    name = client.get('hostname') or client.get('ip', '????')
+    name = client.get('name') or client.get('hostname') or client.get('ip', '????')
     rssi = client.get('rssi', '????')
     mac = client.get('mac', '????')
     rx = int(client.get('rx_rate', 0) / 1000)
     tx = int(client.get('tx_rate', 0) / 1000)
     channel = client.get('channel','????')
+    ip = client.get('fixed_ip', '????')
 
-    print(FORMAT % (name, mac, ap_name, channel, rssi, rx, tx))
+    print(FORMAT % (ip, name, mac, ap_name, channel, rssi, rx, tx))
