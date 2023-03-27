@@ -1,12 +1,2 @@
-MANIFEST
-build
-dist
-Scripts/
-.pypirc
-*.pyc
-pyunifi.egg-info
-pyvenv.cfg
-pip-selfcheck.json
-Lib/
-.tox/
-.vscode/
+# created by virtualenv automatically
+*

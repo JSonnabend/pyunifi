@@ -27,13 +27,14 @@ aps = controller.get_aps()
 ap_names = dict([(ap['mac'], ap.get('name', '????')) for ap in aps])
 clients = controller.get_clients()
 fixed_clients = [c for c in clients if c.get("use_fixedip", False) == True]
-clients.sort(key=lambda x: -x.get('rssi', 100))
+fixed_clients.sort(key=lambda x: tuple(map(int, x.get('fixed_ip', '').split('.'))))
 users = controller.get_users()
 
 FORMAT = '%-15s\t%-30s  %-18s  %-12s  %-4s  %-4s  %-3s  %-3s'
 print(FORMAT % ('ADDR', 'NAME', 'MAC', 'AP', 'CHAN', 'RSSI', 'RX', 'TX'))
 for client in fixed_clients:
     ap_name = ap_names.get(client.get('ap_mac', '????'), '????')
+    ap_name = (ap_name[:9] + '...') if len(ap_name) > 12 else ap_name
     name = client.get('name') or client.get('hostname') or client.get('ip', '????')
     rssi = client.get('rssi', '????')
     mac = client.get('mac', '????')

@@ -865,3 +865,4 @@ class Controller:  # pylint: disable=R0902,R0904
         cmd = "delete-voucher"
         params = {"_id": voucher_id}
         self._run_command(cmd, mgr="hotspot", params=params)
+
