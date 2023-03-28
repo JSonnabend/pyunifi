@@ -52,7 +52,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     ssl_verify = (args.ssl_verify)
-    print(ssl_verify.__str__())
     if not ssl_verify:
         # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         pass
