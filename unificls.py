@@ -45,8 +45,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--port', default='443', help='the controller port (default "443")')
     parser.add_argument('-u', '--username', default='admin', help='the controller username (default("admin")')
     parser.add_argument('-P', '--password', default='', help='the controller password')
-    parser.add_argument('-v', '--version', default='UDMP-unifiOS',
-                        help='the controller base version (default "UDMP-unifiOS")')
+    parser.add_argument('-v', '--version', default='UDMP-unifiOS', help='the controller base version (default "UDMP-unifiOS")')
     parser.add_argument('-s', '--siteid', default='default', help='the site ID, UniFi >=3.x only (default "default")')
     parser.add_argument('-V', '--ssl-verify', default=False, action='store_true', help='verify ssl certificates')
     parser.add_argument('-C', '--certificate', default='', help='verify with ssl certificate pem file')
@@ -59,7 +58,8 @@ if __name__ == '__main__':
         with open(args.config) as configfile:
             for line in configfile:
                 name, var = line.partition("=")[::2]
-                config[name.strip()] = var
+                if name.strip()[0] != '#':
+                    config[name.strip()] = var
     #then overwrite config{} with any specified command line values or defaults
     for arg in vars(args):
         config[arg]=getattr(args, arg)
