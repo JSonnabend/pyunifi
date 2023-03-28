@@ -182,6 +182,7 @@ class Controller:  # pylint: disable=R0902,R0904
     def _login(self):
         self.log.debug("login() as %s", self.username)
         self.session = requests.Session()
+        self.session = requests.Session()
         self.session.verify = self.ssl_verify
 
         response = self.session.post(
