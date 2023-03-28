@@ -52,7 +52,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     ssl_verify = (args.ssl_verify)
-    if ssl_verify and len(args.certificate) > 0:
+    print(ssl_verify.__str__())
+    if not ssl_verify:
+        # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        pass
+    elif ssl_verify and len(args.certificate) > 0:
         ssl_verify = args.certificate
 
     # setup commands
@@ -63,8 +67,7 @@ if __name__ == '__main__':
     }
 
     if command in commands:
-        controller = Controller(args.controller, args.username, args.password, args.port, args.version, args.siteid,
-                                ssl_verify=ssl_verify)
+        controller = Controller(args.controller, args.username, args.password, args.port, args.version, args.siteid, ssl_verify=ssl_verify)
         print(commands[command]())
     else:
         print("command %s not implemented" % command)
