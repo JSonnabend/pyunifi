@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 
 from pyunifi.controller import Controller
 
@@ -38,6 +39,7 @@ def getHosts():
     return result
 
 if __name__ == '__main__':
+    config = {}
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--controller', default='unifi', help='the controller address (default "unifi")')
     parser.add_argument('-p', '--port', default='443', help='the controller port (default "443")')
@@ -48,15 +50,25 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--siteid', default='default', help='the site ID, UniFi >=3.x only (default "default")')
     parser.add_argument('-V', '--ssl-verify', default=False, action='store_true', help='verify ssl certificates')
     parser.add_argument('-C', '--certificate', default='', help='verify with ssl certificate pem file')
+    parser.add_argument('--config', default='', help='config file with format argument=value')
     parser.add_argument('command', nargs='?', default='hosts')
     args = parser.parse_args()
 
-    ssl_verify = (args.ssl_verify)
-    if not ssl_verify:
+    #first write config file valued to config{}
+    if args.config != '' and os.path.isfile(args.config):
+        with open(args.config) as configfile:
+            for line in configfile:
+                name, var = line.partition("=")[::2]
+                config[name.strip()] = var
+    #then overwrite config{} with any specified command line values or defaults
+    for arg in vars(args):
+        config[arg]=getattr(args, arg)
+
+    if not config["ssl_verify"]:
         # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         pass
-    elif ssl_verify and len(args.certificate) > 0:
-        ssl_verify = args.certificate
+    elif config["ssl_verify"] and len(config["certificate"]) > 0:
+        config["ssl_verify"] = config["certificate"]
 
     # setup commands
     command = args.command.lower()
@@ -66,7 +78,7 @@ if __name__ == '__main__':
     }
 
     if command in commands:
-        controller = Controller(args.controller, args.username, args.password, args.port, args.version, args.siteid, ssl_verify=ssl_verify)
+        controller = Controller(config["controller"], config["username"], config["password"], config["port"], config["version"], ssl_verify=config["ssl_verify"])
         print(commands[command]())
     else:
         print("command %s not implemented" % command)
