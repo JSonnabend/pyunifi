@@ -8,11 +8,11 @@ PyUnifi
 ---
 Forked from https://github.com/finish06/pyunifi
 
-Includes bare-bones command line interface in unificls.py
+Includes bare-bones command line interface in unificli.py
 
 API Example
 -----------
-See unificls.py for login/authentication example.
+See unificli.py for login/authentication example.
 
 
 API
