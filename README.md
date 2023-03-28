@@ -6,30 +6,13 @@ PyUnifi
 =========
 
 ---
-A rewrite of https://github.com/unifi-hackers/unifi-lab in cleaner Python.
-Forked from https://github.com/calmh/unifi-api due to unmaintained status and rewritten to use the Requests module.
-
-Development & Pull Request
---------------------------
-Perform all pull requests against the development branch.  Pull requests against the master branch will not be merged, but closed.
-
-Install
--------
-
-    sudo pip install -U pyunifi
+Forked from https://github.com/finish06/pyunifi
+Includes bare-bones command line interface in unificls.py
 
 API Example
 -----------
+See unificls.py for login/authentication example.
 
-```python
-from pyunifi.controller import Controller
-c = Controller('192.168.1.99', 'admin', 'p4ssw0rd')
-for ap in c.get_aps():
-	print('AP named %s with MAC %s' % (ap.get('name'), ap['mac']))
-```
-
-See also the scripts `unifi-ls-clients` and `unifi-low-rssi-reconnect` for more
-examples of how to use the API.
 
 API
 ---
