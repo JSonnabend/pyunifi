@@ -2,7 +2,7 @@
 @rem "D:\Program Files\Python 3.11\python.exe" -m
 pyinstaller -D -y ^
 	--add-data "sampleconfig.conf;." ^
-	unificls.py
+	unificli.py
 xcopy .\dist\unificls\*.* "d:\program files\unifi command line\" /E /Y
 
 @rem
